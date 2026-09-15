@@ -51,11 +51,16 @@ every contract here. When code and spec appear to disagree, fix the code.
    two runs must be byte-identical otherwise.
 9. Flaky policy (SPEC 7): pass iff rate 1.0, fail iff rate 0.0, flaky
    otherwise — uniformly for any N.
-10. `compare` (SPEC 9): any pass_rate decrease is a regression; always exits 0;
+
+10. Do not speculate about, prepare for, or add abstraction layers for any future/unknown requirement changes. Build exactly and only what SPEC.md specifies — nothing extra 'just in case.' If a new requirement arrives later, we will update SPEC.md first and then extend the code at that time — not before. Treat SPEC.md as complete and final for now.
+
+11. `compare` (SPEC 9): any pass_rate decrease is a regression; always exits 0;
     `pct_change = round(delta/baseline*100, 2)`, `0.0` when baseline==0 and
     delta==0, else `null`.
-11. Crash-proofing (SPEC 11): every failure path is a single-line stderr
+12. Crash-proofing (SPEC 11): every failure path is a single-line stderr
     message with the right exit code — a traceback must never reach the user.
+
+12.Do not speculate about, prepare for, or add abstraction layers for any future/unknown requirement changes. Build exactly and only what SPEC.md specifies — nothing extra 'just in case.' If a new requirement arrives later, we will update SPEC.md first and then extend the code at that time — not before. Treat SPEC.md as complete and final for now.
 
 ## Conventions
 
