@@ -126,3 +126,63 @@ commit is spec-only (SPEC 15.12).
 
 None. Where the spec left operational choice (e.g. the exit-4 mapping above),
 this file records the decision and its rationale.
+
+---
+
+## Appendix — fresh-clone verification evidence (2026-09-15)
+
+Executed against a `git clone` of this repository into a scratch directory
+outside the repo:
+
+```
+$ git clone <repo> scratch && cd scratch
+
+$ python -m unittest
+...
+----------------------------------------------------------------------
+Ran 80 tests in 4.480s
+
+OK
+
+$ python promptlab.py doctor
+[PASS] python
+[PASS] model
+[PASS] suites
+[PASS] assertions
+
+$ python promptlab.py run --suite suites/classify_v2.json > /dev/null
+fresh-clone run exit=0
+
+$ git log --reverse --stat --oneline
+ae6724e Add SPEC.md (spec-only initial commit, zero code)
+ SPEC.md | 302 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 302 insertions(+)
+373793a Implement promptlab harness, stubmodel binary, and unittest suite
+ .gitignore        |   2 +
+ promptlab.py      | 971 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ stubmodel.py      | 168 ++++++++++
+ test_promptlab.py | 900 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 2041 insertions(+)
+f4c0533 Add prompts (classify v1/v2 + interim iterations), suites, and flaky demo
+ prompts/_iter2_concise.txt      |   8 +++
+ prompts/_iter3_rawjson.txt      |   8 +++
+ prompts/classify_v1.txt         |   6 +++
+ prompts/classify_v2.txt         |  15 ++++++
+ suites/_iter2.json              | 116 ++++++++++++++++++++++++++++++++++++
+ suites/_iter3.json              | 116 ++++++++++++++++++++++++++++++++++++
+ suites/classify_flaky_demo.json |  24 +++++++++
+ suites/classify_v1.json         | 116 ++++++++++++++++++++++++++++++++++++
+ suites/classify_v2.json         | 116 ++++++++++++++++++++++++++++++++++++
+ 9 files changed, 525 insertions(+)
+18ab6a3 Add IMPROVEMENT/USAGE/CLAUDE/PROMPTS/JOURNAL docs with real run evidence
+ CLAUDE.md      |  83 +++++
+ IMPROVEMENT.md | 996 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ JOURNAL.md     | 128 ++++++++
+ PROMPTS.md     |  60 ++++
+ USAGE.md       | 179 +++++++++++
+ 5 files changed, 1446 insertions(+)
+```
+
+(The `git log --reverse --stat` above predates this evidence commit; the first
+commit remains spec-only — SPEC 15.12 satisfied.)
+
