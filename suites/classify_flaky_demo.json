@@ -1,0 +1,24 @@
+{
+  "name": "classify-flaky-demo",
+  "prompt_file": "../prompts/classify_v2.txt",
+  "model": { "temperature": 0.8, "max_tokens": 256 },
+  "runs": 4,
+  "cases": [
+    {
+      "id": "f001",
+      "input": "I was charged twice for invoice 7",
+      "assert": [
+        { "type": "json_valid" },
+        { "type": "json_field_equals", "field": "category", "value": "billing" }
+      ]
+    },
+    {
+      "id": "f002",
+      "input": "The app crashes every time I tap the sync button",
+      "assert": [
+        { "type": "json_valid" },
+        { "type": "finish_is", "value": "stop" }
+      ]
+    }
+  ]
+}

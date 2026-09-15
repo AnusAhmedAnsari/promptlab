@@ -1,0 +1,116 @@
+{
+  "name": "classify-smoke",
+  "prompt_file": "../prompts/_iter2_concise.txt",
+  "model": {
+    "temperature": 0.0,
+    "max_tokens": 256
+  },
+  "runs": 1,
+  "cases": [
+    {
+      "id": "c001",
+      "input": "I was charged twice for invoice 7",
+      "assert": [
+        {
+          "type": "json_valid"
+        },
+        {
+          "type": "json_field_equals",
+          "field": "category",
+          "value": "billing"
+        },
+        {
+          "type": "not_contains",
+          "value": "Sure"
+        },
+        {
+          "type": "finish_is",
+          "value": "stop"
+        }
+      ]
+    },
+    {
+      "id": "c002",
+      "input": "The app crashes every time I tap the sync button",
+      "assert": [
+        {
+          "type": "contains",
+          "value": "technical",
+          "ignore_case": true
+        },
+        {
+          "type": "matches",
+          "pattern": "\"category\":\\s*\"technical\""
+        }
+      ]
+    },
+    {
+      "id": "c003",
+      "input": "Where is my order number 555? It was supposed to arrive on Tuesday and never did.",
+      "assert": [
+        {
+          "type": "json_field_equals",
+          "field": "category",
+          "value": "shipping"
+        },
+        {
+          "type": "max_tokens",
+          "value": 40
+        }
+      ]
+    },
+    {
+      "id": "c004",
+      "input": "How do I delete my account?",
+      "assert": [
+        {
+          "type": "equals",
+          "value": "{\"category\": \"account\", \"confidence\": 0.9, \"meta\": {\"priority\": \"normal\", \"language\": \"en\"}, \"reason\": \"matched keyword 'account'\"}",
+          "normalize": true
+        },
+        {
+          "type": "json_field_equals",
+          "field": "meta.language",
+          "value": "en"
+        }
+      ]
+    },
+    {
+      "id": "c005",
+      "input": "What is the meaning of life?",
+      "assert": [
+        {
+          "type": "json_field_equals",
+          "field": "category",
+          "value": "general"
+        },
+        {
+          "type": "not_contains",
+          "value": "Let me know"
+        },
+        {
+          "type": "max_tokens",
+          "value": 60
+        }
+      ]
+    },
+    {
+      "id": "c006",
+      "input": "My card was charged twice and I need a refund",
+      "assert": [
+        {
+          "type": "json_valid"
+        },
+        {
+          "type": "json_field_equals",
+          "field": "meta.priority",
+          "value": "high"
+        },
+        {
+          "type": "contains",
+          "value": "billing"
+        }
+      ]
+    }
+  ]
+}
